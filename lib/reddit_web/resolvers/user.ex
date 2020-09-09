@@ -21,5 +21,9 @@ defmodule RedditWeb.Resolvers.User do
     {:ok, %{user: nil, error_message: error_message}}
   end
 
-  defp format_response(user), do: {:ok, %{user: user, error_message: nil}}
+  defp format_response(user) do
+    IO.inspect(user)
+
+    {:ok, %{user: user, error_message: nil}}
+  end
 end
