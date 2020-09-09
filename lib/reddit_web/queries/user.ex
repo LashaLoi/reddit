@@ -20,7 +20,10 @@ defmodule RedditWeb.Queries.User do
   end
 
   object :user_mutations do
-    field :login, :string do
+    field :login, :user do
+      arg(:username, :string |> non_null)
+      arg(:password, :string |> non_null)
+
       resolve(&User.login/3)
     end
 

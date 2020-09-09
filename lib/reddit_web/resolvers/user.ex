@@ -8,7 +8,10 @@ defmodule RedditWeb.Resolvers.User do
     end
   end
 
-  def login(_root, _args, _info) do
-    {:ok, "login"}
+  def login(_root, params, _info) do
+    case Auth.login(params) do
+      {:ok, user} -> {:ok, user}
+      {:error, message} -> {:error, message}
+    end
   end
 end
