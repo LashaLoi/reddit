@@ -49,7 +49,7 @@ defmodule Reddit.Auth do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user(attrs \\ %{}) do
+  def register(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()

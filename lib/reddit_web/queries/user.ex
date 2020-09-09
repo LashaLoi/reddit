@@ -4,6 +4,7 @@ defmodule RedditWeb.Queries.User do
   alias RedditWeb.Resolvers.User
 
   import_types(RedditWeb.Types.User)
+  import_types(RedditWeb.Inputs.User)
 
   object :user_queries do
     field :me, :user do
@@ -12,8 +13,7 @@ defmodule RedditWeb.Queries.User do
          %{
            id: 1,
            username: "Alex",
-           email: "lashaloi1409@gmail.com",
-           password: "password"
+           email: "lashaloi1409@gmail.com"
          }}
       end)
     end
@@ -24,7 +24,9 @@ defmodule RedditWeb.Queries.User do
       resolve(&User.login/3)
     end
 
-    field :register, :string do
+    field :register, :user do
+      arg(:input, :create_user_input |> non_null)
+
       resolve(&User.register/3)
     end
   end
