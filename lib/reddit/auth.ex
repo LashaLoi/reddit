@@ -14,12 +14,17 @@ defmodule Reddit.Auth do
   end
 
   def register(attrs \\ %{}) do
-    {:ok, user} =
-      %User{}
-      |> User.changeset(attrs)
-      |> Repo.insert()
+    case %User{}
+         |> User.changeset(attrs)
+         |> Repo.insert() do
+      {:ok, user} ->
+        {:ok, set_token(user)}
 
-    {:ok, set_token(user)}
+      {:error, changeset} ->
+        {_, {message, _}} = hd(changeset.errors)
+
+        {:error, message}
+    end
   end
 
   def get_user!(id), do: Repo.get!(User, id)

@@ -18,8 +18,10 @@ defmodule Reddit.Auth.User do
     user
     |> cast(attrs, @required_fields ++ [:password_hash])
     |> validate_required(@required_fields)
-    |> unique_constraint(:username)
-    |> unique_constraint(:email)
+    |> validate_length(:username, min: 3, message: "to short username")
+    |> unique_constraint(:username, message: "username already been taken")
+    |> unique_constraint(:email, message: "email already been taken")
+    |> validate_format(:email, ~r/@/, message: "not valid email")
     |> put_pass_hash()
   end
 
