@@ -1,11 +1,7 @@
 defmodule RedditWeb.Resolvers.User do
   alias Reddit.Auth
 
-  def me(_root, _args, %{context: %{id: user_id}}) do
-    IO.inspect(user_id)
-
-    {:ok, Auth.get_user!(user_id)}
-  end
+  def me(_root, _args, %{context: %{id: user_id}}), do: {:ok, Auth.get_user!(user_id)}
 
   def register(_root, %{input: input}, _info) do
     case Auth.register(input) do

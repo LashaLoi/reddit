@@ -5,7 +5,9 @@ defmodule Reddit.Auth do
   alias Reddit.Auth.User
   alias Reddit.Guardian
 
-  @error_message "Incorrect username or password"
+  alias Comeonin.Bcrypt
+
+  def get_user!(id), do: Repo.get!(User, id)
 
   def login(%{username: username, password: pass}) do
     Repo.get_by(User, username: username)
@@ -27,14 +29,12 @@ defmodule Reddit.Auth do
     end
   end
 
-  def get_user!(id), do: Repo.get!(User, id)
+  @error_message "Incorrect username or password"
 
-  defp check_password(nil, _) do
-    {:error, @error_message}
-  end
+  defp check_password(nil, _), do: {:error, @error_message}
 
   defp check_password(user, password) do
-    case Comeonin.Bcrypt.checkpw(password, user.password_hash) do
+    case Bcrypt.checkpw(password, user.password_hash) do
       true -> {:ok, user}
       false -> {:error, @error_message}
     end

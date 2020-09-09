@@ -1,6 +1,9 @@
 defmodule Reddit.Auth.User do
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias Comeonin.Bcrypt
 
   schema "users" do
     field :email, :string
@@ -28,7 +31,7 @@ defmodule Reddit.Auth.User do
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
-        change(changeset, password_hash: Comeonin.Bcrypt.hashpwsalt(password))
+        change(changeset, password_hash: Bcrypt.hashpwsalt(password))
 
       _ ->
         changeset

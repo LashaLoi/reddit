@@ -7,9 +7,7 @@ defmodule RedditWeb.Context do
 
   def init(opts), do: opts
 
-  def call(conn, _) do
-    Absinthe.Plug.put_options(conn, context: build_context(conn))
-  end
+  def call(conn, _), do: Absinthe.Plug.put_options(conn, context: build_context(conn))
 
   defp build_context(conn) do
     token = get_req_header(conn, "x-token")
