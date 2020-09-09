@@ -1,24 +1,9 @@
 defmodule Reddit.Guardian do
   use Guardian, otp_app: :reddit
 
-  alias Reddit.Auth
+  def subject_for_token(nil, _), do: {:error, :reason_for_error}
+  def subject_for_token(user, _claims), do: {:ok, to_string(user.id)}
 
-  def subject_for_token(user, _claims) do
-    sub = to_string(user.id)
-    {:ok, sub}
-  end
-
-  def subject_for_token(_, _) do
-    {:error, :reason_for_error}
-  end
-
-  def resource_from_claims(claims) do
-    id = claims["sub"]
-    resource = Auth.get_user!(id)
-    {:ok, resource}
-  end
-
-  def resource_from_claims(_claims) do
-    {:error, :reason_for_error}
-  end
+  def resource_from_claims(nil), do: {:error, :reason_for_error}
+  def resource_from_claims(claims), do: {:ok, claims["sub"]}
 end

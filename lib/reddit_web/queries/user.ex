@@ -8,14 +8,7 @@ defmodule RedditWeb.Queries.User do
 
   object :user_queries do
     field :me, :user do
-      resolve(fn _root, _arg, _info ->
-        {:ok,
-         %{
-           id: 1,
-           username: "Alex",
-           email: "lashaloi1409@gmail.com"
-         }}
-      end)
+      resolve(&User.me/3)
     end
   end
 
