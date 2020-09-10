@@ -11,7 +11,7 @@ defmodule RedditWeb.Queries.Post do
       resolve(&Post.posts/3)
     end
 
-    field :post, :post do
+    field :post, :post_response do
       arg(:id, :id |> non_null)
 
       resolve(&Post.post/3)
