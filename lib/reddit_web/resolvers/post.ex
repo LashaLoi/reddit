@@ -2,6 +2,10 @@ defmodule RedditWeb.Resolvers.Post do
   alias Reddit.Articles
   alias Helpers.FormatData
 
+  def posts(_root, %{limit: limit, offset: offset}, _info) do
+    {:ok, Articles.list_posts(limit, offset)}
+  end
+
   def posts(_root, _args, _info), do: {:ok, Articles.list_posts()}
 
   def post(_root, %{id: id}, _info) do

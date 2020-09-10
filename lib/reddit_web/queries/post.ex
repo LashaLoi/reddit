@@ -8,6 +8,9 @@ defmodule RedditWeb.Queries.Post do
 
   object :post_queries do
     field :posts, :post |> list_of do
+      arg(:limit, :integer, default_value: nil)
+      arg(:offset, :integer, default_value: nil)
+
       resolve(&Post.posts/3)
     end
 
