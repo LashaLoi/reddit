@@ -1,24 +1,24 @@
 defmodule RedditWeb.Resolvers.Post do
   alias Reddit.Articles
-  alias Helpers.FormatResponse
+  alias Helpers.FormatData
 
   def posts(_root, _args, _info), do: {:ok, Articles.list_posts()}
 
   def post(_root, %{id: id}, _info) do
     case Articles.get_post(id) do
-      nil -> FormatResponse.format("not able to get post with id: #{id}", :post)
-      post -> FormatResponse.format(post, :post)
+      nil -> FormatData.format_response("not able to get post with id: #{id}", :post)
+      post -> FormatData.format_response(post, :post)
     end
   end
 
   def create_post(_root, %{input: input}, %{context: %{id: user_id}}) do
     case Map.put(input, :user_id, user_id) |> Articles.create_post() do
-      {:ok, post} -> FormatResponse.format(post, :post)
-      {:error, error_message} -> FormatResponse.format(error_message, :post)
+      {:ok, post} -> FormatData.format_response(post, :post)
+      {:error, error_message} -> FormatData.format_response(error_message, :post)
     end
   end
 
-  def create_post(_roor, _args, _info), do: FormatResponse.format("unauthorized user", :post)
+  def create_post(_roor, _args, _info), do: FormatData.format_response("unauthorized user", :post)
 
   def delete_post(_root, %{id: id}, _info) do
     with post <- Articles.get_post(id),

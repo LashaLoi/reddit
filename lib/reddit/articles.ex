@@ -3,15 +3,22 @@ defmodule Reddit.Articles do
 
   alias Reddit.Repo
   alias Reddit.Articles.Post
+  alias Helpers.FormatData
 
   def list_posts, do: Repo.all(Post) |> Repo.preload(:user)
 
   def get_post(id), do: Repo.get(Post, id) |> Repo.preload(:user)
 
   def create_post(attrs \\ %{}) do
-    %Post{}
-    |> Post.changeset(attrs)
-    |> Repo.insert()
+    case %Post{}
+         |> Post.changeset(attrs)
+         |> Repo.insert() do
+      {:ok, post} ->
+        {:ok, post}
+
+      {:error, changeset} ->
+        FormatData.format_error(changeset)
+    end
   end
 
   def delete_post(%Post{} = post), do: Repo.delete(post)

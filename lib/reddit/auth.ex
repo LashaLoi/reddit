@@ -4,6 +4,7 @@ defmodule Reddit.Auth do
   alias Reddit.Repo
   alias Reddit.Auth.User
   alias Reddit.Guardian
+  alias Helpers.FormatData
 
   alias Comeonin.Bcrypt
 
@@ -24,9 +25,7 @@ defmodule Reddit.Auth do
         {:ok, set_token(user)}
 
       {:error, changeset} ->
-        {_, {message, _}} = hd(changeset.errors)
-
-        {:error, message}
+        FormatData.format_error(changeset)
     end
   end
 

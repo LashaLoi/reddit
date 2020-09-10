@@ -17,5 +17,7 @@ defmodule Reddit.Articles.Post do
     post
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> validate_length(:title, min: 3, message: "to short title")
+    |> validate_length(:description, min: 3, message: "to short description")
   end
 end
