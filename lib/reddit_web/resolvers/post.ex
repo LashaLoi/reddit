@@ -6,7 +6,7 @@ defmodule RedditWeb.Resolvers.Post do
     {:ok, Articles.list_posts(limit, offset)}
   end
 
-  def posts(_root, _args, _info), do: {:ok, Articles.list_posts()}
+  def posts(_root, _params, _info), do: {:ok, Articles.list_posts()}
 
   def post(_root, %{id: id}, _info) do
     case Articles.get_post(id) do
