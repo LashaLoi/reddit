@@ -1,11 +1,7 @@
 defmodule Reddit.Articles do
-  @moduledoc """
-  The Articles context.
-  """
-
   import Ecto.Query, warn: false
-  alias Reddit.Repo
 
+  alias Reddit.Repo
   alias Reddit.Articles.Post
 
   def list_posts, do: Repo.all(Post) |> Repo.preload(:user)
@@ -18,17 +14,6 @@ defmodule Reddit.Articles do
     |> Repo.insert()
   end
 
-  def update_post(%Post{} = post, attrs) do
-    post
-    |> Post.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_post(%Post{} = post) do
-    Repo.delete(post)
-  end
-
-  def change_post(%Post{} = post) do
-    Post.changeset(post, %{})
-  end
+  def delete_post(%Post{} = post), do: Repo.delete(post)
+  def delete_post(nil), do: nil
 end

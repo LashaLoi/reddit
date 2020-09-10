@@ -20,7 +20,12 @@ defmodule RedditWeb.Resolvers.Post do
 
   def create_post(_roor, _args, _info), do: FormatResponse.format("unauthorized user", :post)
 
-  def delete_post(_root, _args, _info) do
-    {:ok, nil}
+  def delete_post(_root, %{id: id}, _info) do
+    with post <- Articles.get_post(id),
+         {:ok, _} <- Articles.delete_post(post) do
+      {:ok, true}
+    else
+      _ -> {:ok, false}
+    end
   end
 end
