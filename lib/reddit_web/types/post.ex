@@ -6,4 +6,9 @@ defmodule RedditWeb.Types.Post do
     field :title, :string |> non_null
     field :description, :string |> non_null
   end
+
+  object :post_response do
+    field :post, :post
+    field :error_message, :string
+  end
 end

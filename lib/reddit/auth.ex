@@ -7,10 +7,11 @@ defmodule Reddit.Auth do
 
   alias Comeonin.Bcrypt
 
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id), do: Repo.get!(User, id) |> Repo.preload(:posts)
 
   def login(%{username: username, password: pass}) do
     Repo.get_by(User, username: username)
+    |> Repo.preload(:posts)
     |> set_token()
     |> check_password(pass)
   end
@@ -44,6 +45,8 @@ defmodule Reddit.Auth do
 
   defp set_token(user) do
     {:ok, token, _claim} = Guardian.encode_and_sign(user)
+
+    IO.inspect(user)
 
     Map.put(user, :token, token)
   end

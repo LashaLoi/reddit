@@ -19,7 +19,7 @@ defmodule RedditWeb.Queries.Post do
   end
 
   object :post_mutations do
-    field :create_post, :post |> non_null do
+    field :create_post, :post_response do
       arg(:input, :create_post_input)
 
       resolve(&Post.create_post/3)
