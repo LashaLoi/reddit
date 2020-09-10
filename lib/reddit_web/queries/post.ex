@@ -22,12 +22,14 @@ defmodule RedditWeb.Queries.Post do
     field :create_post, :post_response do
       arg(:input, :create_post_input)
 
+      middleware(Middlewares.Auth)
       resolve(&Post.create_post/3)
     end
 
     field :delete_post, :boolean |> non_null do
       arg(:id, :id |> non_null)
 
+      middleware(Middlewares.Auth)
       resolve(&Post.delete_post/3)
     end
   end

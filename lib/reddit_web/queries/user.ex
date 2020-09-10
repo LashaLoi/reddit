@@ -8,6 +8,7 @@ defmodule RedditWeb.Queries.User do
 
   object :user_queries do
     field :me, :user do
+      middleware(Middlewares.Auth)
       resolve(&User.me/3)
     end
   end
