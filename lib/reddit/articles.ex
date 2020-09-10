@@ -8,11 +8,9 @@ defmodule Reddit.Articles do
 
   alias Reddit.Articles.Post
 
-  def list_posts do
-    Repo.all(Post)
-  end
+  def list_posts, do: Repo.all(Post) |> Repo.preload(:user)
 
-  def get_post(id), do: Repo.get(Post, id)
+  def get_post(id), do: Repo.get(Post, id) |> Repo.preload(:user)
 
   def create_post(attrs \\ %{}) do
     %Post{}
