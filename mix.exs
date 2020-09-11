@@ -19,6 +19,7 @@ defmodule Reddit.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
+      # applications: [:faker_elixir_octopus],
       mod: {Reddit.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
@@ -45,7 +46,8 @@ defmodule Reddit.MixProject do
       {:absinthe_plug, "~> 1.4"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.0"},
+      {:faker_elixir_octopus, "> 0.0.0"}
     ]
   end
 
