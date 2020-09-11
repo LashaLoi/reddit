@@ -7,6 +7,8 @@ defmodule RedditWeb.Types.User do
     field :email, :string |> non_null
     field :token, :string
     field :posts, :post |> list_of
+    field :inserted_at, :string
+    field :updated_at, :string
   end
 
   object :user_response do

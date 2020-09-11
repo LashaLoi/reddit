@@ -6,6 +6,8 @@ defmodule RedditWeb.Types.Post do
     field :title, :string |> non_null
     field :description, :string |> non_null
     field :user, :user |> non_null
+    field :inserted_at, :string
+    field :updated_at, :string
   end
 
   object :post_response do
