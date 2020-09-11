@@ -17,4 +17,10 @@ defmodule RedditWeb.Resolvers.User do
       {:error, error_message} -> FormatData.format_response(error_message, :user)
     end
   end
+
+  def get_posts(%{posts: posts}, %{limit: limit, offset: offset}, _info) do
+    {:ok, Enum.slice(posts, offset, limit)}
+  end
+
+  def get_posts(%{posts: posts}, _params, _info), do: {:ok, posts}
 end
