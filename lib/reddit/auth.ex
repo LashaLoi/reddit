@@ -29,6 +29,15 @@ defmodule Reddit.Auth do
     end
   end
 
+  def update_password(new_password, user_id) do
+    case Repo.get!(User, user_id)
+         |> Ecto.Changeset.change(password_hash: Bcrypt.hashpwsalt(new_password))
+         |> Repo.update() do
+      {:ok, _} -> true
+      {:error, _} -> false
+    end
+  end
+
   @error_message "Incorrect username or password"
 
   defp check_password(nil, _), do: {:error, @error_message}
@@ -44,8 +53,6 @@ defmodule Reddit.Auth do
 
   defp set_token(user) do
     {:ok, token, _claim} = Guardian.encode_and_sign(user)
-
-    IO.inspect(user)
 
     Map.put(user, :token, token)
   end

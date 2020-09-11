@@ -22,7 +22,8 @@ defmodule Reddit.Auth.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, @required_fields ++ [:password_hash])
-    |> validate_required(@required_fields)
+    |> validate_required(@required_fields, message: "missing requires fields")
+    |> validate_length(:password, min: 4, message: "to short password")
     |> validate_length(:username, min: 3, message: "to short username")
     |> unique_constraint(:username, message: "username already been taken")
     |> unique_constraint(:email, message: "email already been taken")

@@ -26,5 +26,13 @@ defmodule RedditWeb.Queries.User do
 
       resolve(&User.register/3)
     end
+
+    field :forgot_password, :boolean do
+      arg(:new_password, :string |> non_null)
+      arg(:confirm_new_password, :string |> non_null)
+
+      middleware(Middlewares.Auth)
+      resolve(&User.forgot_password/3)
+    end
   end
 end
