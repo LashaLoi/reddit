@@ -12,11 +12,11 @@ defmodule RedditWeb.Context do
   defp build_context(conn) do
     token = get_req_header(conn, "x-token")
 
-    case Enum.empty?(token) do
-      true ->
+    case token do
+      [] ->
         %{}
 
-      false ->
+      _ ->
         {:ok, id, _claims} = Guardian.resource_from_token(hd(token))
 
         %{id: id}
