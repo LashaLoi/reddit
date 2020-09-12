@@ -11,6 +11,7 @@ defmodule RedditWeb.Queries.Post do
     field :posts, :post |> list_of do
       arg(:limit, :integer, default_value: nil)
       arg(:offset, :integer, default_value: nil)
+      arg(:title, :string, default_value: nil)
 
       middleware(Fields.map(:user))
       resolve(&Post.posts/3)

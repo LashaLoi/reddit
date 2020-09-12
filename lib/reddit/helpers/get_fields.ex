@@ -16,13 +16,16 @@ defmodule Helpers.GetFields do
   end
 
   defp to_ecto_params(fields, nested_key) do
-    Enum.map(fields, fn field ->
-      case is_list(field) do
-        true ->
-          {nested_key, to_ecto_params(field, nested_key)}
+    Enum.reduce(fields, [:id], fn field, acc ->
+      cond do
+        field == "id" ->
+          acc
 
-        false ->
-          map_key(field)
+        is_list(field) == true ->
+          add_to_list(acc, {nested_key, to_ecto_params(field, nested_key)})
+
+        is_list(field) == false ->
+          add_to_list(acc, field |> map_key())
       end
     end)
   end
@@ -30,4 +33,6 @@ defmodule Helpers.GetFields do
   defp map_key(key) when key == @inserted_at, do: :inserted_at
   defp map_key(key) when key == @updated_at, do: :updated_at
   defp map_key(key), do: String.to_atom(key)
+
+  defp add_to_list(list, item), do: List.insert_at(list, -1, item)
 end

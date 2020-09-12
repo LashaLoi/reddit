@@ -5,27 +5,28 @@ defmodule Reddit.Articles do
   alias Reddit.Articles.Post
   alias Reddit.Helpers.FormatData
 
-  def list_posts(fields, limit \\ nil, offset \\ nil) do
+  def list_posts(fields, limit \\ nil, offset \\ nil, title \\ nil) do
     posts_query =
       from p in Post,
+        where: like(p.title, ^"%#{title}%"),
         limit: ^limit,
         offset: ^offset,
-        join: u in assoc(p, :user),
-        preload: [user: u],
+        order_by: [desc: :inserted_at],
         select: ^fields
 
-    Repo.all(posts_query)
+    get_user_if_exist(posts_query, fields)
+    |> Repo.all()
   end
 
   def get_post(id, fields) do
     post_query =
       from p in Post,
         where: p.id == ^id,
-        join: u in assoc(p, :user),
-        preload: [user: u],
-        select: ^fields
+        order_by: [desc: :inserted_at],
+        select: ^FormatData.replace_id(fields)
 
-    Repo.one(post_query)
+    get_user_if_exist(post_query, fields)
+    |> Repo.one()
   end
 
   def get_post(id), do: Repo.get!(Post, id)
@@ -44,4 +45,17 @@ defmodule Reddit.Articles do
 
   def delete_post(%Post{} = post), do: Repo.delete(post)
   def delete_post(nil), do: nil
+
+  defp get_user_if_exist(query, params) do
+    case Keyword.has_key?(params, :user) do
+      true ->
+        from(p in query,
+          join: u in assoc(p, :user),
+          preload: [user: u]
+        )
+
+      false ->
+        query
+    end
+  end
 end

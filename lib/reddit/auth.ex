@@ -5,7 +5,6 @@ defmodule Reddit.Auth do
   alias Reddit.Auth.User
   alias Reddit.Guardian
   alias Reddit.Helpers.FormatData
-
   alias Comeonin.Bcrypt
 
   def get_user!(id), do: Repo.get!(User, id) |> Repo.preload(:posts)
