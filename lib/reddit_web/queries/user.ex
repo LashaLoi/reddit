@@ -8,7 +8,7 @@ defmodule RedditWeb.Queries.User do
 
   object :user_queries do
     field :me, :user do
-      middleware(Middlewares.Auth)
+      middleware(Reddit.Middlewares.Auth)
       resolve(&User.me/3)
     end
   end
@@ -31,7 +31,7 @@ defmodule RedditWeb.Queries.User do
       arg(:new_password, :string |> non_null)
       arg(:confirm_new_password, :string |> non_null)
 
-      middleware(Middlewares.Auth)
+      middleware(Reddit.Middlewares.Auth)
       resolve(&User.forgot_password/3)
     end
   end

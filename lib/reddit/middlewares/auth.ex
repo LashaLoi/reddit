@@ -1,4 +1,4 @@
-defmodule Middlewares.Auth do
+defmodule Reddit.Middlewares.Auth do
   @behaviour Absinthe.Middleware
 
   def call(resolution, _) do

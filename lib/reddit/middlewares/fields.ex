@@ -1,4 +1,4 @@
-defmodule Middlewares.Fields do
+defmodule Reddit.Middlewares.Fields do
   alias Helpers.GetFields
 
   def map(nested_key) do
