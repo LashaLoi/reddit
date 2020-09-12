@@ -24,6 +24,7 @@ defmodule RedditWeb.Types.User do
     field :posts, :post_by_user |> list_of do
       arg(:limit, :integer, default_value: nil)
       arg(:offset, :integer, default_value: nil)
+      arg(:title, :string, default_value: nil)
 
       resolve(&User.get_posts/3)
     end

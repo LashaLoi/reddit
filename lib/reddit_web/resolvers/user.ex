@@ -6,8 +6,12 @@ defmodule RedditWeb.Resolvers.User do
     {:ok, Auth.get_user!(user_id, fields)}
   end
 
-  def get_posts(%{posts: posts}, %{limit: limit, offset: offset}, _info) do
-    {:ok, Enum.slice(posts, offset, limit)}
+  def get_posts(%{posts: posts}, %{limit: limit, offset: offset, title: title}, _info) do
+    posts =
+      Enum.filter(posts, &String.contains?(&1.title, title))
+      |> Enum.slice(offset, limit)
+
+    {:ok, posts}
   end
 
   def get_posts(%{posts: posts}, _params, _info), do: {:ok, posts}
