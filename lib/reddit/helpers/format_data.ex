@@ -1,4 +1,4 @@
-defmodule Helpers.FormatData do
+defmodule Reddit.Helpers.FormatData do
   def format_error(changeset) do
     {_, {message, _}} = hd(changeset.errors)
 

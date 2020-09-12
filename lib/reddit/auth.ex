@@ -4,7 +4,7 @@ defmodule Reddit.Auth do
   alias Reddit.Repo
   alias Reddit.Auth.User
   alias Reddit.Guardian
-  alias Helpers.FormatData
+  alias Reddit.Helpers.FormatData
 
   alias Comeonin.Bcrypt
 

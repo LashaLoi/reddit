@@ -1,6 +1,6 @@
 defmodule RedditWeb.Resolvers.Post do
   alias Reddit.Articles
-  alias Helpers.FormatData
+  alias Reddit.Helpers.FormatData
 
   def posts(_root, %{limit: limit, offset: offset}, %{context: %{fields: fields}}) do
     {:ok, Articles.list_posts(fields, limit, offset)}

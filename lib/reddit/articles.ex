@@ -3,7 +3,7 @@ defmodule Reddit.Articles do
 
   alias Reddit.Repo
   alias Reddit.Articles.Post
-  alias Helpers.FormatData
+  alias Reddit.Helpers.FormatData
 
   def list_posts(fields, limit \\ nil, offset \\ nil) do
     posts_query =
