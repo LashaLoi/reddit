@@ -8,7 +8,7 @@ defmodule RedditWeb.Queries.Post do
   import_types(RedditWeb.Inputs.Post)
 
   object :post_queries do
-    field :posts, :post |> list_of do
+    field :posts, :post |> list_of |> non_null do
       arg(:limit, :integer, default_value: nil)
       arg(:offset, :integer, default_value: nil)
       arg(:title, :string, default_value: nil)
@@ -17,7 +17,7 @@ defmodule RedditWeb.Queries.Post do
       resolve(&Post.posts/3)
     end
 
-    field :post, :post_response do
+    field :post, :post_response |> non_null do
       arg(:id, :id |> non_null)
 
       middleware(Fields.map(:user))
@@ -26,7 +26,7 @@ defmodule RedditWeb.Queries.Post do
   end
 
   object :post_mutations do
-    field :create_post, :post_response do
+    field :create_post, :post_response |> non_null do
       arg(:input, :create_post_input)
 
       middleware(Reddit.Middlewares.Auth)
