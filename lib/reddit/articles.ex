@@ -5,17 +5,30 @@ defmodule Reddit.Articles do
   alias Reddit.Articles.Post
   alias Helpers.FormatData
 
-  def list_posts(limit, offset) do
-    Post
-    |> limit(^limit)
-    |> offset(^offset)
-    |> Repo.all()
-    |> Repo.preload(:user)
+  def list_posts(fields, limit \\ nil, offset \\ nil) do
+    posts_query =
+      from p in Post,
+        limit: ^limit,
+        offset: ^offset,
+        join: u in assoc(p, :user),
+        preload: [user: u],
+        select: ^fields
+
+    Repo.all(posts_query)
   end
 
-  def list_posts, do: Repo.all(Post) |> Repo.preload(:user)
+  def get_post(id, fields) do
+    post_query =
+      from p in Post,
+        where: p.id == ^id,
+        join: u in assoc(p, :user),
+        preload: [user: u],
+        select: ^fields
 
-  def get_post(id), do: Repo.get(Post, id) |> Repo.preload(:user)
+    Repo.one(post_query)
+  end
+
+  def get_post(id), do: Repo.get!(Post, id)
 
   def create_post(attrs \\ %{}) do
     case %Post{}

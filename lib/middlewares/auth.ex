@@ -1,7 +1,7 @@
 defmodule Middlewares.Auth do
   @behaviour Absinthe.Middleware
 
-  def call(resolution, _config) do
+  def call(resolution, _) do
     case resolution.context do
       %{id: _} ->
         resolution

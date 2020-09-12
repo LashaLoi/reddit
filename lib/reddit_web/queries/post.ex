@@ -2,6 +2,7 @@ defmodule RedditWeb.Queries.Post do
   use Absinthe.Schema.Notation
 
   alias RedditWeb.Resolvers.Post
+  alias Middlewares.Fields
 
   import_types(RedditWeb.Types.Post)
   import_types(RedditWeb.Inputs.Post)
@@ -11,12 +12,14 @@ defmodule RedditWeb.Queries.Post do
       arg(:limit, :integer, default_value: nil)
       arg(:offset, :integer, default_value: nil)
 
+      middleware(Fields.map(:user))
       resolve(&Post.posts/3)
     end
 
     field :post, :post_response do
       arg(:id, :id |> non_null)
 
+      middleware(Fields.map(:user))
       resolve(&Post.post/3)
     end
   end

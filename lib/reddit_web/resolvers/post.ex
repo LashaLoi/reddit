@@ -2,14 +2,19 @@ defmodule RedditWeb.Resolvers.Post do
   alias Reddit.Articles
   alias Helpers.FormatData
 
-  def posts(_root, %{limit: limit, offset: offset}, _info) do
-    {:ok, Articles.list_posts(limit, offset)}
+  def posts(_root, %{limit: limit, offset: offset}, %{context: %{fields: fields}}) do
+    {:ok, Articles.list_posts(fields, limit, offset)}
   end
 
-  def posts(_root, _params, _info), do: {:ok, Articles.list_posts()}
+  def posts(_root, _params, %{context: %{fields: fields}}), do: {:ok, Articles.list_posts(fields)}
 
-  def post(_root, %{id: id}, _info) do
-    case Articles.get_post(id) do
+  def post(_root, %{id: id}, %{context: %{fields: data}}) do
+    fields =
+      FormatData.format_graphql_fields(data)
+      |> Enum.filter(&(&1 != :id))
+      |> Enum.concat([:id])
+
+    case Articles.get_post(id, fields) do
       nil -> FormatData.format_response("not able to get post with id: #{id}", :post)
       post -> FormatData.format_response(post, :post)
     end

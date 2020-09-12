@@ -12,4 +12,6 @@ defmodule Helpers.FormatData do
   def format_response(resource, key) do
     {:ok, %{key => resource, error_message: nil}}
   end
+
+  def format_graphql_fields([{_, fields}, _]), do: fields
 end

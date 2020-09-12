@@ -14,12 +14,12 @@ defmodule RedditWeb.Context do
 
     case token do
       [] ->
-        %{}
+        %{fields: nil}
 
       _ ->
         {:ok, id, _claims} = Guardian.resource_from_token(hd(token))
 
-        %{id: id}
+        %{id: id, fields: nil}
     end
   end
 end
