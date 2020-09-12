@@ -2,7 +2,9 @@ defmodule RedditWeb.Resolvers.User do
   alias Reddit.Auth
   alias Reddit.Helpers.FormatData
 
-  def me(_root, _params, %{context: %{id: user_id}}), do: {:ok, Auth.get_user!(user_id)}
+  def me(_root, _params, %{context: %{id: user_id, fields: fields}}) do
+    {:ok, Auth.get_user!(user_id, fields)}
+  end
 
   def get_posts(%{posts: posts}, %{limit: limit, offset: offset}, _info) do
     {:ok, Enum.slice(posts, offset, limit)}

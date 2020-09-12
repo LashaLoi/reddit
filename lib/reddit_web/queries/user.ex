@@ -2,6 +2,7 @@ defmodule RedditWeb.Queries.User do
   use Absinthe.Schema.Notation
 
   alias RedditWeb.Resolvers.User
+  alias Reddit.Middlewares.Fields
 
   import_types(RedditWeb.Types.User)
   import_types(RedditWeb.Inputs.User)
@@ -9,6 +10,7 @@ defmodule RedditWeb.Queries.User do
   object :user_queries do
     field :me, :user do
       middleware(Reddit.Middlewares.Auth)
+      middleware(Fields.map(:posts))
       resolve(&User.me/3)
     end
   end

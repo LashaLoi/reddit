@@ -7,7 +7,18 @@ defmodule Reddit.Auth do
   alias Reddit.Helpers.FormatData
   alias Comeonin.Bcrypt
 
-  def get_user!(id), do: Repo.get!(User, id) |> Repo.preload(:posts)
+  def get_user!(id, fields) do
+    fields = remove_token(fields)
+
+    user_query =
+      from u in User,
+        where: u.id == ^id,
+        order_by: [desc: :inserted_at],
+        select: ^fields
+
+    get_posts_if_exits(user_query, fields)
+    |> Repo.one()
+  end
 
   def login(%{username: username, password: pass}) do
     Repo.get_by(User, username: username)
@@ -55,4 +66,19 @@ defmodule Reddit.Auth do
 
     Map.put(user, :token, token)
   end
+
+  defp get_posts_if_exits(query, params) do
+    case Keyword.has_key?(params, :posts) do
+      true ->
+        from(u in query,
+          join: p in assoc(u, :posts),
+          preload: [posts: p]
+        )
+
+      false ->
+        query
+    end
+  end
+
+  defp remove_token(params), do: Enum.filter(params, &(&1 != :token))
 end
