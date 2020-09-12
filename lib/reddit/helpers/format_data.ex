@@ -13,7 +13,5 @@ defmodule Reddit.Helpers.FormatData do
     {:ok, %{key => resource, error_message: nil}}
   end
 
-  def format_graphql_fields([{_, fields}, _]), do: fields
-
-  def replace_id(fields), do: Enum.concat([:id], Enum.filter(fields, &(&1 != :id)))
+  def format_graphql_fields([_, {_, fields}, _]), do: fields
 end

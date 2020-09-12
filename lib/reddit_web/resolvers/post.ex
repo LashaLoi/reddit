@@ -8,8 +8,8 @@ defmodule RedditWeb.Resolvers.Post do
 
   def posts(_root, _params, %{context: %{fields: fields}}), do: {:ok, Articles.list_posts(fields)}
 
-  def post(_root, %{id: id}, %{context: %{fields: data}}) do
-    fields = FormatData.format_graphql_fields(data)
+  def post(_root, %{id: id}, %{context: %{fields: fields}}) do
+    fields = FormatData.format_graphql_fields(fields)
 
     case Articles.get_post(id, fields) do
       nil -> FormatData.format_response("not able to get post with id: #{id}", :post)

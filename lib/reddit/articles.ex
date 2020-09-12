@@ -23,7 +23,7 @@ defmodule Reddit.Articles do
       from p in Post,
         where: p.id == ^id,
         order_by: [desc: :inserted_at],
-        select: ^FormatData.replace_id(fields)
+        select: ^fields
 
     get_user_if_exist(post_query, fields)
     |> Repo.one()
