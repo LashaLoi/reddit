@@ -6,6 +6,7 @@ defmodule Reddit.Auth do
   alias Reddit.Guardian
   alias Reddit.Helpers.FormatData
   alias Comeonin.Bcrypt
+  alias Reddit.Helpers.Utils
 
   def get_user!(id, fields) do
     fields = remove_token(fields)
@@ -16,7 +17,7 @@ defmodule Reddit.Auth do
         order_by: [desc: :inserted_at],
         select: ^fields
 
-    get_posts_if_exits(user_query, fields)
+    Utils.add_resource_if_exists(user_query, fields, :posts)
     |> Repo.one()
   end
 
@@ -65,19 +66,6 @@ defmodule Reddit.Auth do
     {:ok, token, _claim} = Guardian.encode_and_sign(user)
 
     Map.put(user, :token, token)
-  end
-
-  defp get_posts_if_exits(query, params) do
-    case Keyword.has_key?(params, :posts) do
-      true ->
-        from(u in query,
-          join: p in assoc(u, :posts),
-          preload: [posts: p]
-        )
-
-      false ->
-        query
-    end
   end
 
   defp remove_token(params), do: Enum.filter(params, &(&1 != :token))

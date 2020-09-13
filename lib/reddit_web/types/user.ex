@@ -7,6 +7,7 @@ defmodule RedditWeb.Types.User do
     field :id, :id |> non_null
     field :title, :string |> non_null
     field :description, :string |> non_null
+
     field :inserted_at, :string
     field :updated_at, :string
   end

@@ -3,7 +3,6 @@ defmodule RedditWeb.Queries.Post do
 
   alias RedditWeb.Resolvers.Post
   alias RedditWeb.Subscriptions
-
   alias Reddit.Middlewares.Fields
 
   import_types(RedditWeb.Types.Post)

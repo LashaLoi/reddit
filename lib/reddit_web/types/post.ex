@@ -15,6 +15,7 @@ defmodule RedditWeb.Types.Post do
     field :title, :string |> non_null
     field :description, :string |> non_null
     field :user, :user_by_post |> non_null
+
     field :inserted_at, :string
     field :updated_at, :string
   end

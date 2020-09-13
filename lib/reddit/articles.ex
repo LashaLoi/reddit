@@ -4,6 +4,7 @@ defmodule Reddit.Articles do
   alias Reddit.Repo
   alias Reddit.Articles.Post
   alias Reddit.Helpers.FormatData
+  alias Reddit.Helpers.Utils
 
   def list_posts(fields, limit \\ nil, offset \\ nil, title \\ nil) do
     posts_query =
@@ -14,7 +15,7 @@ defmodule Reddit.Articles do
         order_by: [desc: :inserted_at],
         select: ^fields
 
-    get_user_if_exist(posts_query, fields)
+    Utils.add_resource_if_exists(posts_query, fields, :user)
     |> Repo.all()
   end
 
@@ -25,7 +26,7 @@ defmodule Reddit.Articles do
         order_by: [desc: :inserted_at],
         select: ^fields
 
-    get_user_if_exist(post_query, fields)
+    Utils.add_resource_if_exists(post_query, fields, :user)
     |> Repo.one()
   end
 
@@ -45,17 +46,4 @@ defmodule Reddit.Articles do
 
   def delete_post(%Post{} = post), do: Repo.delete(post)
   def delete_post(nil), do: nil
-
-  defp get_user_if_exist(query, params) do
-    case Keyword.has_key?(params, :user) do
-      true ->
-        from(p in query,
-          join: u in assoc(p, :user),
-          preload: [user: u]
-        )
-
-      false ->
-        query
-    end
-  end
 end
