@@ -8,10 +8,15 @@ defmodule RedditWeb.Resolvers.User do
 
   def get_posts(%{posts: posts}, %{limit: limit, offset: offset, title: title}, _info) do
     posts =
-      Enum.filter(posts, &String.contains?(&1.title, title))
-      |> Enum.slice(offset, limit)
+      case posts |> hd() |> Map.get(:title) do
+        nil ->
+          posts
 
-    {:ok, posts}
+        _ ->
+          Enum.filter(posts, &String.contains?(&1.title, title))
+      end
+
+    {:ok, Enum.slice(posts, offset, limit)}
   end
 
   def get_posts(%{posts: posts}, _params, _info), do: {:ok, posts}
