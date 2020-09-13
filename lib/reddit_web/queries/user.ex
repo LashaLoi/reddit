@@ -8,6 +8,7 @@ defmodule RedditWeb.Queries.User do
   import_types(RedditWeb.Inputs.User)
 
   object :user_queries do
+    @desc "Get current user"
     field :me, :user do
       middleware(Reddit.Middlewares.Auth)
       middleware(Fields.map(:posts))
@@ -16,6 +17,7 @@ defmodule RedditWeb.Queries.User do
   end
 
   object :user_mutations do
+    @desc "Sign in to application"
     field :login, :user_response |> non_null do
       arg(:username, :string |> non_null)
       arg(:password, :string |> non_null)
@@ -23,12 +25,14 @@ defmodule RedditWeb.Queries.User do
       resolve(&User.login/3)
     end
 
+    @desc "Sign up in application"
     field :register, :user_response |> non_null do
       arg(:input, :create_user_input |> non_null)
 
       resolve(&User.register/3)
     end
 
+    @desc "Update user password"
     field :forgot_password, :boolean |> non_null do
       arg(:new_password, :string |> non_null)
       arg(:confirm_new_password, :string |> non_null)
