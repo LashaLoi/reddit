@@ -8,6 +8,7 @@ defmodule Reddit.Articles.Post do
     field :title, :string
 
     belongs_to :user, Reddit.Auth.User
+    has_many :comments, Reddit.Comments.Comment
 
     timestamps()
   end
