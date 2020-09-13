@@ -1,6 +1,7 @@
 alias Reddit.Repo
 alias Reddit.Auth.User
 alias Reddit.Articles.Post
+alias Reddit.Comments.Comment
 
 # Users
 {:ok, first_user} =
@@ -21,25 +22,45 @@ alias Reddit.Articles.Post
 
 # Posts
 Enum.each(
-  1..20,
+  1..10,
   fn _ ->
-    %Post{
-      title: FakerElixir.Name.title(),
-      description: FakerElixir.Lorem.sentence(),
-      user_id: first_user.id
-    }
-    |> Repo.insert()
+    {:ok, post} =
+      %Post{
+        title: FakerElixir.Name.title(),
+        description: FakerElixir.Lorem.sentence(),
+        user_id: first_user.id
+      }
+      |> Repo.insert()
+
+    # Comments
+    Enum.each(1..4, fn _ ->
+      %Comment{
+        text: FakerElixir.Lorem.sentence(),
+        post_id: post.id
+      }
+      |> Repo.insert()
+    end)
   end
 )
 
 Enum.each(
-  1..15,
+  1..5,
   fn _ ->
-    %Post{
-      title: FakerElixir.Name.title(),
-      description: FakerElixir.Lorem.sentence(),
-      user_id: second_user.id
-    }
-    |> Repo.insert()
+    {:ok, post} =
+      %Post{
+        title: FakerElixir.Name.title(),
+        description: FakerElixir.Lorem.sentence(),
+        user_id: second_user.id
+      }
+      |> Repo.insert()
+
+    # Comments
+    Enum.each(1..4, fn _ ->
+      %Comment{
+        text: FakerElixir.Lorem.sentence(),
+        post_id: post.id
+      }
+      |> Repo.insert()
+    end)
   end
 )
