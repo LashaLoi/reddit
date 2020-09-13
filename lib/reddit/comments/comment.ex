@@ -5,6 +5,7 @@ defmodule Reddit.Comments.Comment do
 
   schema "comments" do
     field :text, :string
+    field :username, :string
 
     belongs_to :post, Reddit.Articles.Post
 
@@ -14,7 +15,7 @@ defmodule Reddit.Comments.Comment do
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:text])
-    |> validate_required([:text])
+    |> cast(attrs, [:text, :username])
+    |> validate_required([:text, :username])
   end
 end

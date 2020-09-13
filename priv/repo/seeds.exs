@@ -36,7 +36,8 @@ Enum.each(
     Enum.each(1..4, fn _ ->
       %Comment{
         text: FakerElixir.Lorem.sentence(),
-        post_id: post.id
+        post_id: post.id,
+        username: first_user.username
       }
       |> Repo.insert()
     end)
@@ -58,7 +59,8 @@ Enum.each(
     Enum.each(1..4, fn _ ->
       %Comment{
         text: FakerElixir.Lorem.sentence(),
-        post_id: post.id
+        post_id: post.id,
+        username: second_user.username
       }
       |> Repo.insert()
     end)
