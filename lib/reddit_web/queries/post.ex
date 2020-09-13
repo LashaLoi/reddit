@@ -45,9 +45,15 @@ defmodule RedditWeb.Queries.Post do
 
   object :post_subscriptions do
     field :post_created, :post do
-      config(Subscriptions.Topic.set_topic())
+      config(Subscriptions.Utils.set_topic())
 
       resolve(&Subscriptions.Post.post_added/3)
+    end
+
+    field :post_deleted, :post do
+      config(Subscriptions.Utils.set_topic())
+
+      resolve(&Subscriptions.Post.post_deleted/3)
     end
   end
 end

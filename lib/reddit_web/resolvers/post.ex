@@ -1,6 +1,7 @@
 defmodule RedditWeb.Resolvers.Post do
   alias Reddit.Articles
   alias Reddit.Helpers.FormatData
+  alias RedditWeb.Subscriptions.Utils
 
   def posts(_root, %{limit: limit, offset: offset, title: title}, %{context: %{fields: fields}}) do
     {:ok, Articles.list_posts(fields, limit, offset, title)}
@@ -20,7 +21,7 @@ defmodule RedditWeb.Resolvers.Post do
   def create_post(_root, %{input: input}, %{context: %{id: user_id}}) do
     case Map.put(input, :user_id, user_id) |> Articles.create_post() do
       {:ok, post} ->
-        publish(post, post_created: "*")
+        Utils.publish(post, post_created: "*")
         FormatData.format_response(post, :post)
 
       {:error, error_message} ->
@@ -31,13 +32,10 @@ defmodule RedditWeb.Resolvers.Post do
   def delete_post(_root, %{id: id}, _info) do
     with post <- Articles.get_post(id),
          {:ok, _} <- Articles.delete_post(post) do
+      Utils.publish(post, post_deleted: "*")
       {:ok, true}
     else
       _ -> {:ok, false}
     end
-  end
-
-  defp publish(resource, mutation) do
-    Absinthe.Subscription.publish(RedditWeb.Endpoint, resource, mutation)
   end
 end
