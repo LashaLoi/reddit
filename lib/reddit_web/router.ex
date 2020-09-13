@@ -19,6 +19,7 @@ defmodule RedditWeb.Router do
 
     forward "/graphql", Absinthe.Plug.GraphiQL,
       schema: RedditWeb.Schema,
+      socket: RedditWeb.UserSocket,
       interface: :advanced,
       context: %{pubsub: RedditWeb.Endpoint}
   end

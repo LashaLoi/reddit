@@ -1,5 +1,10 @@
 defmodule RedditWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :reddit
+  use Absinthe.Phoenix.Endpoint
+
+  socket "/socket", RedditWeb.UserSocket,
+    websocket: true,
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #

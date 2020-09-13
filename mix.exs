@@ -44,6 +44,7 @@ defmodule Reddit.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
+      {:absinthe_phoenix, "~> 1.5"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:guardian, "~> 1.0"},

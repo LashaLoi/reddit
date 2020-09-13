@@ -4,7 +4,8 @@ defmodule Reddit.Application do
   def start(_type, _params) do
     children = [
       Reddit.Repo,
-      RedditWeb.Endpoint
+      RedditWeb.Endpoint,
+      {Absinthe.Subscription, RedditWeb.Endpoint}
     ]
 
     opts = [strategy: :one_for_one, name: Reddit.Supervisor]

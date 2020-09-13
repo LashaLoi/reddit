@@ -2,6 +2,8 @@ defmodule RedditWeb.Queries.Post do
   use Absinthe.Schema.Notation
 
   alias RedditWeb.Resolvers.Post
+  alias RedditWeb.Subscriptions
+
   alias Reddit.Middlewares.Fields
 
   import_types(RedditWeb.Types.Post)
@@ -38,6 +40,14 @@ defmodule RedditWeb.Queries.Post do
 
       middleware(Reddit.Middlewares.Auth)
       resolve(&Post.delete_post/3)
+    end
+  end
+
+  object :post_subscriptions do
+    field :post_created, :post do
+      config(Subscriptions.Topic.set_topic())
+
+      resolve(&Subscriptions.Post.post_added/3)
     end
   end
 end

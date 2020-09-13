@@ -13,4 +13,8 @@ defmodule RedditWeb.Schema do
     import_fields(:user_mutations)
     import_fields(:post_mutations)
   end
+
+  subscription do
+    import_fields(:post_subscriptions)
+  end
 end

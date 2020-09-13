@@ -19,8 +19,12 @@ defmodule RedditWeb.Resolvers.Post do
 
   def create_post(_root, %{input: input}, %{context: %{id: user_id}}) do
     case Map.put(input, :user_id, user_id) |> Articles.create_post() do
-      {:ok, post} -> FormatData.format_response(post, :post)
-      {:error, error_message} -> FormatData.format_response(error_message, :post)
+      {:ok, post} ->
+        publish(post, post_created: "*")
+        FormatData.format_response(post, :post)
+
+      {:error, error_message} ->
+        FormatData.format_response(error_message, :post)
     end
   end
 
@@ -31,5 +35,9 @@ defmodule RedditWeb.Resolvers.Post do
     else
       _ -> {:ok, false}
     end
+  end
+
+  defp publish(resource, mutation) do
+    Absinthe.Subscription.publish(RedditWeb.Endpoint, resource, mutation)
   end
 end
