@@ -1,22 +1,19 @@
 defmodule RedditWeb.Queries.Post do
   use Absinthe.Schema.Notation
 
-  alias RedditWeb.Resolvers.Post
-  alias RedditWeb.Subscriptions
-  alias Reddit.Middlewares.Fields
+  alias RedditWeb.{Resolvers, Subscriptions, Types, Inputs}
+  alias Reddit.Middlewares.{Fields, Auth}
 
-  import_types(RedditWeb.Types.Post)
-  import_types(RedditWeb.Inputs.Post)
+  import_types(Types.Post)
+  import_types(Inputs.Post)
 
   object :post_queries do
     @desc "Get all posts"
     field :posts, :post |> list_of |> non_null do
-      arg(:limit, :integer, default_value: nil)
-      arg(:offset, :integer, default_value: nil)
-      arg(:title, :string, default_value: nil)
+      arg(:input, :posts_input |> non_null)
 
       middleware(Fields.map(:user))
-      resolve(&Post.posts/3)
+      resolve(&Resolvers.Post.posts/3)
     end
 
     @desc "Get post by id"
@@ -24,7 +21,7 @@ defmodule RedditWeb.Queries.Post do
       arg(:id, :id |> non_null)
 
       middleware(Fields.map(:user))
-      resolve(&Post.post/3)
+      resolve(&Resolvers.Post.post/3)
     end
   end
 
@@ -33,16 +30,16 @@ defmodule RedditWeb.Queries.Post do
     field :create_post, :post_response |> non_null do
       arg(:input, :create_post_input)
 
-      middleware(Reddit.Middlewares.Auth)
-      resolve(&Post.create_post/3)
+      middleware(Auth)
+      resolve(&Resolvers.Post.create_post/3)
     end
 
     @desc "Delete post by id"
     field :delete_post, :boolean |> non_null do
       arg(:id, :id |> non_null)
 
-      middleware(Reddit.Middlewares.Auth)
-      resolve(&Post.delete_post/3)
+      middleware(Auth)
+      resolve(&Resolvers.Post.delete_post/3)
     end
   end
 

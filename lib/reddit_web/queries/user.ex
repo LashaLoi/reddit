@@ -1,18 +1,18 @@
 defmodule RedditWeb.Queries.User do
   use Absinthe.Schema.Notation
 
-  alias RedditWeb.Resolvers.User
-  alias Reddit.Middlewares.Fields
+  alias RedditWeb.{Resolvers, Types, Inputs}
+  alias Reddit.Middlewares.{Fields, Auth}
 
-  import_types(RedditWeb.Types.User)
-  import_types(RedditWeb.Inputs.User)
+  import_types(Types.User)
+  import_types(Inputs.User)
 
   object :user_queries do
     @desc "Get current user"
     field :me, :user do
-      middleware(Reddit.Middlewares.Auth)
+      middleware(Auth)
       middleware(Fields.map(:posts))
-      resolve(&User.me/3)
+      resolve(&Resolvers.User.me/3)
     end
   end
 
@@ -22,14 +22,14 @@ defmodule RedditWeb.Queries.User do
       arg(:username, :string |> non_null)
       arg(:password, :string |> non_null)
 
-      resolve(&User.login/3)
+      resolve(&Resolvers.User.login/3)
     end
 
     @desc "Sign up in application"
     field :register, :user_response |> non_null do
       arg(:input, :create_user_input |> non_null)
 
-      resolve(&User.register/3)
+      resolve(&Resolvers.User.register/3)
     end
 
     @desc "Update user password"
@@ -37,8 +37,8 @@ defmodule RedditWeb.Queries.User do
       arg(:new_password, :string |> non_null)
       arg(:confirm_new_password, :string |> non_null)
 
-      middleware(Reddit.Middlewares.Auth)
-      resolve(&User.forgot_password/3)
+      middleware(Auth)
+      resolve(&Resolvers.User.forgot_password/3)
     end
   end
 end
