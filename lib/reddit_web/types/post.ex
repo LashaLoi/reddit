@@ -6,8 +6,8 @@ defmodule RedditWeb.Types.Post do
     field :username, :string |> non_null
     field :email, :string |> non_null
 
-    field :inserted_at, :string
-    field :updated_at, :string
+    field :inserted_at, :string |> non_null
+    field :updated_at, :string |> non_null
   end
 
   object :post do
@@ -16,8 +16,8 @@ defmodule RedditWeb.Types.Post do
     field :description, :string |> non_null
     field :user, :user_by_post |> non_null
 
-    field :inserted_at, :string
-    field :updated_at, :string
+    field :inserted_at, :string |> non_null
+    field :updated_at, :string |> non_null
   end
 
   object :post_response do

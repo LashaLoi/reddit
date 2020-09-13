@@ -8,8 +8,8 @@ defmodule RedditWeb.Types.User do
     field :title, :string |> non_null
     field :description, :string |> non_null
 
-    field :inserted_at, :string
-    field :updated_at, :string
+    field :inserted_at, :string |> non_null
+    field :updated_at, :string |> non_null
   end
 
   object :user do
@@ -17,8 +17,8 @@ defmodule RedditWeb.Types.User do
     field :username, :string |> non_null
     field :email, :string |> non_null
 
-    field :inserted_at, :string
-    field :updated_at, :string
+    field :inserted_at, :string |> non_null
+    field :updated_at, :string |> non_null
 
     field :token, :string
 

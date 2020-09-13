@@ -1,12 +1,16 @@
 defmodule RedditWeb.Schema do
   use Absinthe.Schema
 
-  import_types(RedditWeb.Queries.User)
-  import_types(RedditWeb.Queries.Post)
+  alias RedditWeb.Queries.{User, Post, Comment}
+
+  import_types(User)
+  import_types(Post)
+  import_types(Comment)
 
   query do
     import_fields(:user_queries)
     import_fields(:post_queries)
+    import_fields(:comment_queries)
   end
 
   mutation do
