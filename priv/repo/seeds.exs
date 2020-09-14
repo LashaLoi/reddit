@@ -23,7 +23,7 @@ alias Reddit.Comments.Comment
 # Posts
 Enum.each(
   1..10,
-  fn _ ->
+  fn ->
     {:ok, post} =
       %Post{
         title: FakerElixir.Name.title(),
@@ -46,7 +46,7 @@ Enum.each(
 
 Enum.each(
   1..5,
-  fn _ ->
+  fn ->
     {:ok, post} =
       %Post{
         title: FakerElixir.Name.title(),
