@@ -7,8 +7,10 @@ defmodule RedditWeb.Resolvers.User do
   end
 
   def get_posts(%{posts: posts}, %{limit: limit, offset: offset, title: title}, _info) do
+    has_title? = posts |> hd() |> Map.get(:title)
+
     posts =
-      case posts |> hd() |> Map.get(:title) do
+      case has_title? do
         nil ->
           posts
 
